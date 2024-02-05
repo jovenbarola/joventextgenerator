@@ -64,6 +64,36 @@ register_deactivation_hook( __FILE__, 'deactivate_joventextgenerator' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-joventextgenerator.php';
 
+// Your main plugin file might include the action hook as well
+add_action('plugins_loaded', 'run_joventextgenerator');
+
+// Hook into the admin_menu action hook
+add_action('admin_menu', 'joven_custom_menu');
+
+
+// Function to create the custom menu
+function joven_custom_menu() {
+    // Parameters for add_menu_page function
+    // add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position);
+
+    add_menu_page(
+        'Joven Generate Text - Lorem Ipsum',      // Page Title
+        'Joven Generate Text - Lorem Ipsum',         // Menu Title
+        'manage_options',      // Capability (who can access this menu)
+        'joven_loremipsum_page_slug', // Menu Slug (should be unique)
+        'joven_loremipsum_page',      // Callback function to display content
+        'dashicons-buddicons-buddypress-logo', // Icon URL or dashicon class
+        20                     // Position in the menu
+    );
+}
+
+// Callback function to display content for the custom page
+function joven_loremipsum_page() {
+    // Your page content goes here
+	$html = file_get_contents(plugin_dir_url(__FILE__) . 'web/loremipsum.php');
+    echo $html;
+}
+
 /**
  * Begins execution of the plugin.
  *
